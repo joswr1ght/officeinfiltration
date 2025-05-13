@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congratulations!</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body { 
+            background-color: #343a40; 
+            color: white; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            text-align: center; 
+            margin: 0;
+        }
+        .container {
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #495057; /* Slightly lighter than body for contrast */
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #28a745; /* Green for success */
+        }
+        p {
+            font-size: 1.2rem;
+        }
+        a.btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+         a.btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Congratulations!</h1>
+        <p>You've successfully infiltrated the office and completed all challenges.</p>
+        <p>Your mission is a success!</p>
+        <hr style="border-top: 1px solid #6c757d;">
+        <a href="{{ url_for('level1') }}" class="btn btn-primary btn-lg mt-3">Play Again?</a>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ level_data.title }}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("{{ url_for('static', filename=level_data.image) }}");
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #343a40;
+            min-height: 100vh;
+            margin: 0;
+            color: white;
+        }
+
+        .challenge-box {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            width: calc(100% - 20px);
+            max-width: 500px;
+            background-color: rgba(255, 255, 255, 0.5); /* White background with 50% transparency */
+            color: black;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+            max-height: calc(80vh - 20px);
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        .btn-ask-ai {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+            color: white;
+        }
+        #ai_response {
+            background-color: #e9ecef;
+            min-height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <div class="challenge-box">
+        <h3>{{ level_data.title }}</h3>
+        <p>{{ level_data.challenge_description }}</p>
+        <hr>
+
+        <!-- AI Interaction -->
+        <form id="ask-ai-form" class="mb-3">
+            <div class="form-group">
+                <textarea class="form-control" id="ai_question" name="ai_question" rows="3" placeholder="e.g., What type of card reader is it?"></textarea>
+            </div>
+            <button type="submit" class="btn btn-ask-ai btn-block">Ask AI</button>
+        </form>
+        <div class="form-group">
+            <textarea class="form-control" id="ai_response" rows="3" readonly placeholder="AI's answer will appear here..."></textarea>
+        </div>
+        <hr>
+
+        <!-- Answer Submission -->
+        <form method="POST" action="{{ url_for('submit_answer') }}">
+            <div class="form-row">
+                <div class="col">
+                    <input type="text" class="form-control" name="user_answer" placeholder="Enter your answer" required>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary btn-block">Submit Answer</button>
+                </div>
+            </div>
+            {% if request.args.get('error') %}
+                <div class="alert alert-danger mt-2" role="alert">
+                    {{ request.args.get('error') }}
+                </div>
+            {% endif %}
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#ask-ai-form').on('submit', function(e) {
+                e.preventDefault();
+                var question = $('#ai_question').val();
+                if (!question.trim()) {
+                    $('#ai_response').val('Please type a question for the AI.');
+                    return;
+                }
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url_for("ask_ai") }}',
+                    data: {
+                        ai_question: question
+                    },
+                    beforeSend: function() {
+                        $('#ai_response').val('Thinking...');
+                    },
+                    success: function(response) {
+                        $('#ai_response').val(response);
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        $('#ai_response').val('Error: Could not reach the AI. Status: ' + textStatus + '. Error: ' + errorThrown);
+                        console.error("AJAX Error: ", textStatus, errorThrown, jqXHR.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
