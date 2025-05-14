@@ -92,17 +92,18 @@
             <form method="POST" action="{{ url_for('submit_answer') }}" class="flex-grow-1 mr-2">
                 <div class="form-row">
                     <div class="col">
-                        <input type="text" class="form-control" name="user_answer" placeholder="Enter your answer" required>
+                      <!-- Change placerholder text to display request.args.get('error') -->
+                      {% if request.args.get('error') %}
+                      <input type="text" class="form-control" name="user_answer" placeholder="Error, try again" required>
+                      {% else %}
+                      <input type="text" class="form-control" name="user_answer" placeholder="Enter your answer" required>
+                      {% endif %}
+
                     </div>
                     <div class="col">
                         <button type="submit" class="btn btn-primary btn-block">Submit Answer</button>
                     </div>
                 </div>
-                {% if request.args.get('error') %}
-                    <div class="alert alert-danger mt-2" role="alert">
-                        {{ request.args.get('error') }}
-                    </div>
-                {% endif %}
             </form>
             <button type="button" class="btn btn-info" id="hintButton">Hint</button>
         </div>
@@ -194,17 +195,17 @@
             {% if hints %}
                 hints = {{ hints|tojson|safe }};
             {% endif %}
-            
+
             var currentHintIndex = 0;
-            
+
             $('#hintButton').on('click', function() {
                 if (hints && hints.length > 0) {
                     // Display the current hint
                     $('#hintText').text(hints[currentHintIndex]);
-                    
+
                     // Update index for next hint (loop back to first hint after reaching the end)
                     currentHintIndex = (currentHintIndex + 1) % hints.length;
-                    
+
                     // Show the modal
                     $('#hintModal').modal('show');
                 } else {
