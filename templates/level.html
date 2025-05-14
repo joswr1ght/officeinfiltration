@@ -23,8 +23,8 @@
             bottom: 10px;
             left: 10px;
             width: calc(100% - 20px);
-            max-width: 500px;
-            background-color: rgba(255, 255, 255, 0.5); /* White background with 50% transparency */
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.7); /* White background with 70% transparency */
             color: black;
             padding: 25px;
             border-radius: 8px;
@@ -49,17 +49,16 @@
     <div class="challenge-box">
         <h3>{{ level_data.title }}</h3>
         <p>{{ level_data.challenge_description }}</p>
-        <hr>
 
         <!-- AI Interaction -->
         <form id="ask-ai-form" class="mb-3">
             <div class="form-group">
-                <textarea class="form-control" id="ai_question" name="ai_question" rows="3" placeholder="e.g., What type of card reader is it?"></textarea>
+                <textarea class="form-control" id="ai_question" name="ai_question" rows="4" placeholder="e.g., What type of card reader is it?"></textarea>
             </div>
             <button type="submit" class="btn btn-ask-ai btn-block">Ask AI</button>
         </form>
         <div class="form-group">
-            <textarea class="form-control" id="ai_response" rows="3" readonly placeholder="AI's answer will appear here..."></textarea>
+            <textarea class="form-control" id="ai_response" rows="4" readonly placeholder="AI's answer will appear here..."></textarea>
         </div>
         <hr>
 
