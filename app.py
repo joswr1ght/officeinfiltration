@@ -62,6 +62,19 @@ LEVEL_DATA = {
     }
 }
 
+# Add level completion information
+LEVEL_SUCCESS_INFO = {
+    1: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget justo vel erat facilisis scelerisque. Fusce vestibulum metus et dolor egestas, at commodo leo iaculis. Morbi pulvinar diam eu velit fermentum, id faucibus arcu consequat. Integer dapibus magna ac enim rhoncus, at feugiat arcu vestibulum. Praesent venenatis mi id cursus mollis. Fusce sollicitudin quam vel urna maximus, sed suscipit augue sollicitudin. Phasellus placerat massa nec elementum ultricies. Donec placerat luctus est, vel pretium justo laoreet non. Mauris vitae posuere tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+    
+    2: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+    
+    3: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.",
+    
+    4: "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+    
+    5: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium."
+}
+
 # System prompts for each level for OpenAI
 base_prompt = "You are a building security guard, tasked with protecting access to sensitive areas."
 
@@ -84,35 +97,45 @@ def set_current_level(level):
 @app.route('/')
 def level1():
     set_current_level(1)
-    return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1])
+    # Get success_info from session if it exists, then clear it
+    success_info = session.pop('success_info', None)
+    return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1], success_info=success_info)
 
 @app.route(LEVEL_PATHS[2], methods=['GET', 'POST'])
 def level2():
     if get_current_level() < 2:
-        return redirect(url_for('level1')) # Or some other appropriate redirect
+        return redirect(url_for('level1'))
     set_current_level(2)
-    return render_template('level.html', level_data=LEVEL_DATA[2], current_path=LEVEL_PATHS[2])
+    # Get success_info from session if it exists, then clear it
+    success_info = session.pop('success_info', None)
+    return render_template('level.html', level_data=LEVEL_DATA[2], current_path=LEVEL_PATHS[2], success_info=success_info)
 
 @app.route(LEVEL_PATHS[3], methods=['GET', 'POST'])
 def level3():
     if get_current_level() < 3:
         return redirect(LEVEL_PATHS.get(get_current_level(), '/'))
     set_current_level(3)
-    return render_template('level.html', level_data=LEVEL_DATA[3], current_path=LEVEL_PATHS[3])
+    # Get success_info from session if it exists, then clear it
+    success_info = session.pop('success_info', None)
+    return render_template('level.html', level_data=LEVEL_DATA[3], current_path=LEVEL_PATHS[3], success_info=success_info)
 
 @app.route(LEVEL_PATHS[4], methods=['GET', 'POST'])
 def level4():
     if get_current_level() < 4:
         return redirect(LEVEL_PATHS.get(get_current_level(), '/'))
     set_current_level(4)
-    return render_template('level.html', level_data=LEVEL_DATA[4], current_path=LEVEL_PATHS[4])
+    # Get success_info from session if it exists, then clear it
+    success_info = session.pop('success_info', None)
+    return render_template('level.html', level_data=LEVEL_DATA[4], current_path=LEVEL_PATHS[4], success_info=success_info)
 
 @app.route(LEVEL_PATHS[5], methods=['GET', 'POST'])
 def level5():
     if get_current_level() < 5:
         return redirect(LEVEL_PATHS.get(get_current_level(), '/'))
     set_current_level(5)
-    return render_template('level.html', level_data=LEVEL_DATA[5], current_path=LEVEL_PATHS[5])
+    # Get success_info from session if it exists, then clear it
+    success_info = session.pop('success_info', None)
+    return render_template('level.html', level_data=LEVEL_DATA[5], current_path=LEVEL_PATHS[5], success_info=success_info)
 
 @app.route('/ask_ai', methods=['POST'])
 def ask_ai():
@@ -153,19 +176,42 @@ def submit_answer():
     # Case-insensitive comparison for the answer
     if user_answer and user_answer.lower() == level_data['correct_answer'].lower():
         next_level_num = current_level_num + 1
-        if next_level_num > 5: # Max levels
-            return redirect(url_for('congratulations'))
-
-        set_current_level(next_level_num)
-        next_path = LEVEL_PATHS.get(next_level_num)
-        if next_path:
-            return redirect(next_path)
+        
+        # Store success info in session
+        session['success_info'] = {
+            'level_completed': current_level_num,
+            'title': f"Level {current_level_num} Completed!",
+            'message': LEVEL_SUCCESS_INFO.get(current_level_num, "Level completed successfully!"),
+            'next_level': next_level_num
+        }
+        
+        # Determine the next path
+        if next_level_num > 5:  # Max levels
+            next_path = url_for('congratulations')
         else:
-            return "Error: Next level path not found.", 500
+            next_path = LEVEL_PATHS.get(next_level_num)
+            if not next_path:
+                return "Error: Next level path not found.", 500
+        
+        # Set the next level in the session
+        set_current_level(next_level_num)
+        
+        # Redirect to the appropriate level page, which will display the success info
+        if next_level_num == 1:
+            return redirect(url_for('level1'))
+        elif next_level_num == 2:
+            return redirect(url_for('level2'))
+        elif next_level_num == 3:
+            return redirect(url_for('level3'))
+        elif next_level_num == 4:
+            return redirect(url_for('level4'))
+        elif next_level_num == 5:
+            return redirect(url_for('level5'))
+        else:
+            return redirect(url_for('congratulations'))
     else:
         # Stay on the current level, maybe provide feedback
         # For simplicity, just re-rendering the current level's page
-        # A more advanced version might pass an error message to the template
         current_path = LEVEL_PATHS.get(current_level_num)
         if not current_path:
              return "Error: Current level path not found.", 500

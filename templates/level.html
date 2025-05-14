@@ -15,7 +15,7 @@
             background-color: #343a40;
             min-height: 100vh;
             margin: 0;
-            color: white;
+            color: black;
         }
 
         .challenge-box {
@@ -42,6 +42,31 @@
         #ai_response {
             background-color: #e9ecef;
             min-height: 100px;
+        }
+
+        /* Success modal styling */
+        .modal-content {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .modal-header {
+            border-bottom: 2px solid #28a745;
+            background-color: #f8f9fa;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        .modal-title {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .modal-footer {
+            border-top: none;
+        }
+        .btn-success-modal {
+            background-color: #28a745;
+            border-color: #28a745;
+            color: white;
         }
     </style>
 </head>
@@ -80,11 +105,41 @@
         </form>
     </div>
 
+    <!-- Success Modal -->
+    {% if success_info %}
+    <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="successModalLabel">{{ success_info.title }}</h5>
+                </div>
+                <div class="modal-body">
+                    <p>{{ success_info.message }}</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success-modal" id="continueToNextLevel">Continue</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         $(document).ready(function() {
+            // Show success modal if present
+            {% if success_info %}
+            $('#successModal').modal('show');
+
+            // Handle continue button click
+            $('#continueToNextLevel').on('click', function() {
+                $('#successModal').modal('hide');
+                // Modal will be hidden automatically when navigating to the next page
+            });
+            {% endif %}
+
             $('#ask-ai-form').on('submit', function(e) {
                 e.preventDefault();
                 var question = $('#ai_question').val();
