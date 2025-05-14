@@ -92,13 +92,7 @@
             <form method="POST" action="{{ url_for('submit_answer') }}" class="flex-grow-1 mr-2">
                 <div class="form-row">
                     <div class="col">
-                      <!-- Change placerholder text to display request.args.get('error') -->
-                      {% if request.args.get('error') %}
-                      <input type="text" class="form-control" name="user_answer" placeholder="Error, try again" required>
-                      {% else %}
                       <input type="text" class="form-control" name="user_answer" placeholder="Enter your answer" required>
-                      {% endif %}
-
                     </div>
                     <div class="col">
                         <button type="submit" class="btn btn-primary btn-block">Submit Answer</button>
@@ -148,6 +142,26 @@
         </div>
     </div>
 
+    <!-- Error Modal for Incorrect Answers -->
+    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="errorModalLabel">Incorrect</h5>
+                    <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="errorMessageText"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -163,6 +177,20 @@
                 // Modal will be hidden automatically when navigating to the next page
             });
             {% endif %}
+
+            // Check for flashed error messages to trigger the error modal
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        {% if category == 'error_modal_trigger' %}
+                            $('#errorMessageText').text("{{ message|safe }}");
+                            $('#errorModal').modal('show');
+                        {% elif category == 'error' %}
+                            alert("{{ message|safe }}");
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
 
             $('#ask-ai-form').on('submit', function(e) {
                 e.preventDefault();

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 import secrets
 import openai
 import os
@@ -283,7 +283,6 @@ def submit_answer():
     if user_answer and user_answer.lower() == level_data['correct_answer'].lower():
         next_level_num = current_level_num + 1
         
-        # Store success info in session
         session['success_info'] = {
             'level_completed': current_level_num,
             'title': f"Level {current_level_num} Completed!",
@@ -291,42 +290,24 @@ def submit_answer():
             'next_level': next_level_num
         }
         
-        # Determine the next path
         if next_level_num > 5:  # Max levels
             next_path = url_for('congratulations')
         else:
             next_path = LEVEL_PATHS.get(next_level_num)
             if not next_path:
-                return "Error: Next level path not found.", 500
+                flash("Error: Next level path not found.", "error") # Keep generic error for this
+                return redirect(LEVEL_PATHS.get(current_level_num, '/')) 
         
-        # Set the next level in the session
         set_current_level(next_level_num)
-        
-        # Redirect to the appropriate level page, which will display the success info
-        if next_level_num == 1:
-            return redirect(url_for('level1'))
-        elif next_level_num == 2:
-            return redirect(url_for('level2'))
-        elif next_level_num == 3:
-            return redirect(url_for('level3'))
-        elif next_level_num == 4:
-            return redirect(url_for('level4'))
-        elif next_level_num == 5:
-            return redirect(url_for('level5'))
-        else:
-            return redirect(url_for('congratulations'))
+        return redirect(next_path)
     else:
-        # Stay on the current level, maybe provide feedback
-        # For simplicity, just re-rendering the current level's page
+        flash("Incorrect. Try again.", "error_modal_trigger") # Use specific category for modal
+        
         current_path = LEVEL_PATHS.get(current_level_num)
         if not current_path:
-             return "Error: Current level path not found.", 500
-        # Need to reconstruct the route function name or redirect to the path directly
-        if current_level_num == 1:
-            return redirect(url_for('level1', error="Incorrect answer. Try again."))
-        # For other levels, we redirect to their specific paths
-        # We pass an error message via query parameter for simplicity here
-        return redirect(f"{current_path}?error=Incorrect+answer.+Try+again.")
+            flash("Error: Current level path not found.", "error") # Keep generic error for this
+            return redirect(url_for('level1')) 
+        return redirect(current_path)
 
 @app.route('/congratulations')
 def congratulations():
