@@ -87,22 +87,25 @@
         </div>
         <hr>
 
-        <!-- Answer Submission -->
-        <form method="POST" action="{{ url_for('submit_answer') }}">
-            <div class="form-row">
-                <div class="col">
-                    <input type="text" class="form-control" name="user_answer" placeholder="Enter your answer" required>
+        <!-- Answer Submission with Hint Button -->
+        <div class="d-flex mb-3">
+            <form method="POST" action="{{ url_for('submit_answer') }}" class="flex-grow-1 mr-2">
+                <div class="form-row">
+                    <div class="col">
+                        <input type="text" class="form-control" name="user_answer" placeholder="Enter your answer" required>
+                    </div>
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary btn-block">Submit Answer</button>
+                    </div>
                 </div>
-                <div class="col">
-                    <button type="submit" class="btn btn-primary btn-block">Submit Answer</button>
-                </div>
-            </div>
-            {% if request.args.get('error') %}
-                <div class="alert alert-danger mt-2" role="alert">
-                    {{ request.args.get('error') }}
-                </div>
-            {% endif %}
-        </form>
+                {% if request.args.get('error') %}
+                    <div class="alert alert-danger mt-2" role="alert">
+                        {{ request.args.get('error') }}
+                    </div>
+                {% endif %}
+            </form>
+            <button type="button" class="btn btn-info" id="hintButton">Hint</button>
+        </div>
     </div>
 
     <!-- Success Modal -->
@@ -123,6 +126,26 @@
         </div>
     </div>
     {% endif %}
+
+    <!-- Hint Modal -->
+    <div class="modal fade" id="hintModal" tabindex="-1" role="dialog" aria-labelledby="hintModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="hintModalLabel">Hint</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p id="hintText"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
@@ -164,6 +187,31 @@
                         console.error("AJAX Error: ", textStatus, errorThrown, jqXHR.responseText);
                     }
                 });
+            });
+
+            // Hint functionality
+            var hints = [];
+            {% if hints %}
+                hints = {{ hints|tojson|safe }};
+            {% endif %}
+            
+            var currentHintIndex = 0;
+            
+            $('#hintButton').on('click', function() {
+                if (hints && hints.length > 0) {
+                    // Display the current hint
+                    $('#hintText').text(hints[currentHintIndex]);
+                    
+                    // Update index for next hint (loop back to first hint after reaching the end)
+                    currentHintIndex = (currentHintIndex + 1) % hints.length;
+                    
+                    // Show the modal
+                    $('#hintModal').modal('show');
+                } else {
+                    // No hints available
+                    $('#hintText').text("No hints available for this level.");
+                    $('#hintModal').modal('show');
+                }
             });
         });
     </script>

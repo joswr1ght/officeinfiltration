@@ -114,6 +114,45 @@ LEVEL_SUCCESS_INFO = {
     )
 }
 
+# Hints for each level
+LEVEL_HINTS = {
+    1: [
+        "Look carefully at the security guard's badge.",
+        "Security personnel often follow consistent patterns.",
+        "Try asking about the badge number format.",
+        "The code has 6 digits.",
+        "The first digit is 4 and the last digit is 8."
+    ],
+    2: [
+        "Maintenance staff need access to all areas of the building.",
+        "Check for any maintenance access panels near the elevator.",
+        "Janitorial staff often have special keys for service areas.",
+        "There's a maintenance closet nearby with an access key.",
+        "The maintenance key can override normal elevator security."
+    ],
+    3: [
+        "The elevator control panel has a hidden override function.",
+        "Look for maintenance or emergency control options.",
+        "Try finding the service panel behind the main control panel.",
+        "Building engineers can override floor restrictions.",
+        "The override control is accessible through the panel."
+    ],
+    4: [
+        "The code is a simple 4-digit number.",
+        "Many people use predictable codes like '1234'.",
+        "Default codes are often left unchanged by lazy administrators.",
+        "Security systems often have factory default settings.",
+        "Try the most obvious four-digit sequence."
+    ],
+    5: [
+        "Many users choose simple passwords.",
+        "Look for personal items that might hint at password choices.",
+        "People often write down passwords somewhere nearby.",
+        "Check for sticky notes or personal reminders.",
+        "Trying common password patterns can work."
+    ]
+}
+
 # System prompts for each level for OpenAI
 base_prompt = "You are a building security guard, tasked with protecting access to sensitive areas."
 
@@ -161,7 +200,8 @@ def level1():
     set_current_level(1)
     # Get success_info from session if it exists, then clear it
     success_info = session.pop('success_info', None)
-    return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1], success_info=success_info)
+    return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1], 
+                           success_info=success_info, hints=LEVEL_HINTS.get(1, []))
 
 @app.route(LEVEL_PATHS[2], methods=['GET', 'POST'])
 def level2():
@@ -170,7 +210,8 @@ def level2():
     set_current_level(2)
     # Get success_info from session if it exists, then clear it
     success_info = session.pop('success_info', None)
-    return render_template('level.html', level_data=LEVEL_DATA[2], current_path=LEVEL_PATHS[2], success_info=success_info)
+    return render_template('level.html', level_data=LEVEL_DATA[2], current_path=LEVEL_PATHS[2], 
+                           success_info=success_info, hints=LEVEL_HINTS.get(2, []))
 
 @app.route(LEVEL_PATHS[3], methods=['GET', 'POST'])
 def level3():
@@ -179,7 +220,8 @@ def level3():
     set_current_level(3)
     # Get success_info from session if it exists, then clear it
     success_info = session.pop('success_info', None)
-    return render_template('level.html', level_data=LEVEL_DATA[3], current_path=LEVEL_PATHS[3], success_info=success_info)
+    return render_template('level.html', level_data=LEVEL_DATA[3], current_path=LEVEL_PATHS[3], 
+                           success_info=success_info, hints=LEVEL_HINTS.get(3, []))
 
 @app.route(LEVEL_PATHS[4], methods=['GET', 'POST'])
 def level4():
@@ -188,7 +230,8 @@ def level4():
     set_current_level(4)
     # Get success_info from session if it exists, then clear it
     success_info = session.pop('success_info', None)
-    return render_template('level.html', level_data=LEVEL_DATA[4], current_path=LEVEL_PATHS[4], success_info=success_info)
+    return render_template('level.html', level_data=LEVEL_DATA[4], current_path=LEVEL_PATHS[4], 
+                           success_info=success_info, hints=LEVEL_HINTS.get(4, []))
 
 @app.route(LEVEL_PATHS[5], methods=['GET', 'POST'])
 def level5():
@@ -197,7 +240,8 @@ def level5():
     set_current_level(5)
     # Get success_info from session if it exists, then clear it
     success_info = session.pop('success_info', None)
-    return render_template('level.html', level_data=LEVEL_DATA[5], current_path=LEVEL_PATHS[5], success_info=success_info)
+    return render_template('level.html', level_data=LEVEL_DATA[5], current_path=LEVEL_PATHS[5], 
+                           success_info=success_info, hints=LEVEL_HINTS.get(5, []))
 
 @app.route('/ask_ai', methods=['POST'])
 def ask_ai():
