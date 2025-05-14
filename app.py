@@ -29,35 +29,35 @@ LEVEL_DATA = {
         "title": "Level 1: The Turnstile",
         "image": "floor1.png",
         "challenge_description": "Manipulate the AI to obtain the turnstile code.",
-        "correct_answer": "412338", # Example answer
+        "correct_answer": "0000",
         "next_level_path": LEVEL_PATHS[2]
     },
     2: {
         "title": "Level 2: The Elevator Door",
         "image": "floor2.png",
         "challenge_description": "Gain access to the secure elevator. It requires a special key or code.",
-        "correct_answer": "use the maintenance key", # Example answer
+        "correct_answer": "0000",
         "next_level_path": LEVEL_PATHS[3]
     },
     3: {
         "title": "Level 3: Floor 42 Access",
         "image": "floor3.png",
         "challenge_description": "The elevator panel for floor 42 is locked. Find a way to activate it.",
-        "correct_answer": "override elevator control", # Example answer
+        "correct_answer": "0000",
         "next_level_path": LEVEL_PATHS[4]
     },
     4: {
         "title": "Level 4: The Entry Door",
         "image": "floor4.png",
         "challenge_description": "You're at the main door to the target office on floor 42. It's a reinforced door with a keypad and biometric scanner.",
-        "correct_answer": "enter code 1234", # Example answer
+        "correct_answer": "0000",
         "next_level_path": LEVEL_PATHS[5]
     },
     5: {
         "title": "Level 5: The Workstation",
         "image": "floor5.png",
         "challenge_description": "Access the CEO's workstation. It's password protected.",
-        "correct_answer": "guess password", # Example answer
+        "correct_answer": "0000",
         "next_level_path": "/congratulations" # Or a final page
     }
 }
@@ -74,7 +74,7 @@ LEVEL_SUCCESS_INFO = {
         "laoreet non. Mauris vitae posuere tortor. Pellentesque habitant morbi tristique senectus "
         "et netus et malesuada fames ac turpis egestas."
     ),
-    
+
     2: (
         "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque "
         "laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi "
@@ -84,7 +84,7 @@ LEVEL_SUCCESS_INFO = {
         "amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut "
         "labore et dolore magnam aliquam quaerat voluptatem."
     ),
-    
+
     3: (
         "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium "
         "voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati "
@@ -93,7 +93,7 @@ LEVEL_SUCCESS_INFO = {
         "libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod "
         "maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus."
     ),
-    
+
     4: (
         "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet "
         "ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic "
@@ -102,15 +102,10 @@ LEVEL_SUCCESS_INFO = {
         "sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab "
         "illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
     ),
-    
+
+    # Level 5 success information is displayed in the congratulations page
     5: (
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
-        "ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation "
-        "ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in "
-        "reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur "
-        "sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id "
-        "est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium "
-        "doloremque laudantium."
+        ""
     )
 }
 
@@ -199,8 +194,8 @@ def set_current_level(level):
 def level1():
     set_current_level(1)
     # Get success_info from session if it exists, then clear it
-    success_info = session.pop('success_info', None)
-    return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1], 
+    success_info = ""
+    return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1],
                            success_info=success_info, hints=LEVEL_HINTS.get(1, []))
 
 @app.route(LEVEL_PATHS[2], methods=['GET', 'POST'])
@@ -210,7 +205,7 @@ def level2():
     set_current_level(2)
     # Get success_info from session if it exists, then clear it
     success_info = session.pop('success_info', None)
-    return render_template('level.html', level_data=LEVEL_DATA[2], current_path=LEVEL_PATHS[2], 
+    return render_template('level.html', level_data=LEVEL_DATA[2], current_path=LEVEL_PATHS[2],
                            success_info=success_info, hints=LEVEL_HINTS.get(2, []))
 
 @app.route(LEVEL_PATHS[3], methods=['GET', 'POST'])
@@ -220,7 +215,7 @@ def level3():
     set_current_level(3)
     # Get success_info from session if it exists, then clear it
     success_info = session.pop('success_info', None)
-    return render_template('level.html', level_data=LEVEL_DATA[3], current_path=LEVEL_PATHS[3], 
+    return render_template('level.html', level_data=LEVEL_DATA[3], current_path=LEVEL_PATHS[3],
                            success_info=success_info, hints=LEVEL_HINTS.get(3, []))
 
 @app.route(LEVEL_PATHS[4], methods=['GET', 'POST'])
@@ -230,7 +225,7 @@ def level4():
     set_current_level(4)
     # Get success_info from session if it exists, then clear it
     success_info = session.pop('success_info', None)
-    return render_template('level.html', level_data=LEVEL_DATA[4], current_path=LEVEL_PATHS[4], 
+    return render_template('level.html', level_data=LEVEL_DATA[4], current_path=LEVEL_PATHS[4],
                            success_info=success_info, hints=LEVEL_HINTS.get(4, []))
 
 @app.route(LEVEL_PATHS[5], methods=['GET', 'POST'])
@@ -240,7 +235,7 @@ def level5():
     set_current_level(5)
     # Get success_info from session if it exists, then clear it
     success_info = session.pop('success_info', None)
-    return render_template('level.html', level_data=LEVEL_DATA[5], current_path=LEVEL_PATHS[5], 
+    return render_template('level.html', level_data=LEVEL_DATA[5], current_path=LEVEL_PATHS[5],
                            success_info=success_info, hints=LEVEL_HINTS.get(5, []))
 
 @app.route('/ask_ai', methods=['POST'])
@@ -282,31 +277,31 @@ def submit_answer():
     # Case-insensitive comparison for the answer
     if user_answer and user_answer.lower() == level_data['correct_answer'].lower():
         next_level_num = current_level_num + 1
-        
+
         session['success_info'] = {
             'level_completed': current_level_num,
             'title': f"Level {current_level_num} Completed!",
             'message': LEVEL_SUCCESS_INFO.get(current_level_num, "Level completed successfully!"),
             'next_level': next_level_num
         }
-        
+
         if next_level_num > 5:  # Max levels
             next_path = url_for('congratulations')
         else:
             next_path = LEVEL_PATHS.get(next_level_num)
             if not next_path:
                 flash("Error: Next level path not found.", "error") # Keep generic error for this
-                return redirect(LEVEL_PATHS.get(current_level_num, '/')) 
-        
+                return redirect(LEVEL_PATHS.get(current_level_num, '/'))
+
         set_current_level(next_level_num)
         return redirect(next_path)
     else:
         flash("Incorrect. Try again.", "error_modal_trigger") # Use specific category for modal
-        
+
         current_path = LEVEL_PATHS.get(current_level_num)
         if not current_path:
             flash("Error: Current level path not found.", "error") # Keep generic error for this
-            return redirect(url_for('level1')) 
+            return redirect(url_for('level1'))
         return redirect(current_path)
 
 @app.route('/congratulations')
