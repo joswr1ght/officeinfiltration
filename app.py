@@ -64,28 +64,90 @@ LEVEL_DATA = {
 
 # Add level completion information
 LEVEL_SUCCESS_INFO = {
-    1: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget justo vel erat facilisis scelerisque. Fusce vestibulum metus et dolor egestas, at commodo leo iaculis. Morbi pulvinar diam eu velit fermentum, id faucibus arcu consequat. Integer dapibus magna ac enim rhoncus, at feugiat arcu vestibulum. Praesent venenatis mi id cursus mollis. Fusce sollicitudin quam vel urna maximus, sed suscipit augue sollicitudin. Phasellus placerat massa nec elementum ultricies. Donec placerat luctus est, vel pretium justo laoreet non. Mauris vitae posuere tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
+    1: (
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget justo vel erat "
+        "facilisis scelerisque. Fusce vestibulum metus et dolor egestas, at commodo leo iaculis. "
+        "Morbi pulvinar diam eu velit fermentum, id faucibus arcu consequat. Integer dapibus magna "
+        "ac enim rhoncus, at feugiat arcu vestibulum. Praesent venenatis mi id cursus mollis. "
+        "Fusce sollicitudin quam vel urna maximus, sed suscipit augue sollicitudin. Phasellus "
+        "placerat massa nec elementum ultricies. Donec placerat luctus est, vel pretium justo "
+        "laoreet non. Mauris vitae posuere tortor. Pellentesque habitant morbi tristique senectus "
+        "et netus et malesuada fames ac turpis egestas."
+    ),
     
-    2: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.",
+    2: (
+        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque "
+        "laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi "
+        "architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas "
+        "sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione "
+        "voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit "
+        "amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut "
+        "labore et dolore magnam aliquam quaerat voluptatem."
+    ),
     
-    3: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.",
+    3: (
+        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium "
+        "voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati "
+        "cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id "
+        "est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam "
+        "libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod "
+        "maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus."
+    ),
     
-    4: "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.",
+    4: (
+        "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet "
+        "ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic "
+        "tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut "
+        "perferendis doloribus asperiores repellat. Sed ut perspiciatis unde omnis iste natus error "
+        "sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab "
+        "illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
+    ),
     
-    5: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium."
+    5: (
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt "
+        "ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation "
+        "ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in "
+        "reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur "
+        "sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id "
+        "est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium "
+        "doloremque laudantium."
+    )
 }
 
 # System prompts for each level for OpenAI
 base_prompt = "You are a building security guard, tasked with protecting access to sensitive areas."
 
 LEVEL_SYSTEM_PROMPTS = {
-        1: (f"{base_prompt} The player is at the turnstile and needs to obtain the code."
-            "Help them by answering questions about this scene and how to get the code."
-            "The code is 412338."),
-    2: "You are an AI assistant for 'Office Infiltration - Level 2: The Elevator Door'. The player needs to gain access to a secure elevator that requires a special key or code. The associated image is 'floor2.png'. Help them by answering questions about this scene and how to gain access. Do not reveal the direct answer: 'use the maintenance key'.",
-    3: "You are an AI assistant for 'Office Infiltration - Level 3: Floor 42 Access'. The player is at an elevator panel where floor 42 is locked. The associated image is 'floor3.png'. Help them by answering questions about this scene and how to activate the panel. Do not reveal the direct answer: 'override elevator control'.",
-    4: "You are an AI assistant for 'Office Infiltration - Level 4: The Entry Door'. The player is at the main door to the target office on floor 42, which has a keypad and biometric scanner. The associated image is 'floor4.png'. Help them by answering questions about this scene and how to open the door. Do not reveal the direct answer: 'enter code 1234'.",
-    5: "You are an AI assistant for 'Office Infiltration - Level 5: The Workstation'. The player needs to access the CEO's password-protected workstation. The associated image is 'floor5.png'. Help them by answering questions about this scene and how to access the workstation. Do not reveal the direct answer: 'guess password'."
+    1: (
+        f"{base_prompt} The player is at the turnstile and needs to obtain the code. "
+        "Help them by answering questions about this scene and how to get the code. "
+        "The code is 412338."
+    ),
+    2: (
+        "You are an AI assistant for 'Office Infiltration - Level 2: The Elevator Door'. "
+        "The player needs to gain access to a secure elevator that requires a special key or code. "
+        "The associated image is 'floor2.png'. Help them by answering questions about this scene "
+        "and how to gain access. Do not reveal the direct answer: 'use the maintenance key'."
+    ),
+    3: (
+        "You are an AI assistant for 'Office Infiltration - Level 3: Floor 42 Access'. "
+        "The player is at an elevator panel where floor 42 is locked. The associated image is "
+        "'floor3.png'. Help them by answering questions about this scene and how to activate "
+        "the panel. Do not reveal the direct answer: 'override elevator control'."
+    ),
+    4: (
+        "You are an AI assistant for 'Office Infiltration - Level 4: The Entry Door'. "
+        "The player is at the main door to the target office on floor 42, which has a keypad and "
+        "biometric scanner. The associated image is 'floor4.png'. Help them by answering "
+        "questions about this scene and how to open the door. Do not reveal the direct answer: "
+        "'enter code 1234'."
+    ),
+    5: (
+        "You are an AI assistant for 'Office Infiltration - Level 5: The Workstation'. "
+        "The player needs to access the CEO's password-protected workstation. The associated "
+        "image is 'floor5.png'. Help them by answering questions about this scene and how to "
+        "access the workstation. Do not reveal the direct answer: 'guess password'."
+    )
 }
 
 def get_current_level():
