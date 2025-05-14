@@ -194,6 +194,18 @@
 
             $('#ask-ai-form').on('submit', function(e) {
                 e.preventDefault();
+                submitAiQuestion();
+            });
+
+            // Listen for Enter key press in the AI question textarea
+            $('#ai_question').on('keypress', function(e) {
+                if (e.which === 13 && !e.shiftKey) { // 13 is Enter, !e.shiftKey allows Shift+Enter for new lines
+                    e.preventDefault(); // Prevent default Enter behavior (new line)
+                    submitAiQuestion(); // Submit the form
+                }
+            });
+
+            function submitAiQuestion() {
                 var question = $('#ai_question').val();
                 if (!question.trim()) {
                     $('#ai_response').val('Please type a question for the AI.');
@@ -216,7 +228,7 @@
                         console.error("AJAX Error: ", textStatus, errorThrown, jqXHR.responseText);
                     }
                 });
-            });
+            }
 
             // Hint functionality
             var hints = [];

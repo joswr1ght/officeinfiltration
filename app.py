@@ -240,8 +240,7 @@ def ask_ai():
     ollama_base_url = os.getenv("OPENAI_API_BASE_URL", "http://localhost:11434/v1")
     ollama_api_key = os.getenv("OPENAI_API_KEY", "ollama")
 
-    system_prompt = LEVEL_SYSTEM_PROMPTS.get(current_level_num,
-                                             "You are a helpful assistant. Do not reveal direct answers to game challenges.")
+    system_prompt = LEVEL_SYSTEM_PROMPTS.get(current_level_num, "You are a helpful assistant.")
 
     try:
         client = openai.OpenAI(
@@ -250,7 +249,7 @@ def ask_ai():
         )
 
         completion = client.chat.completions.create(
-            model="gemma3:1b-it-qat",  # 1 billion parameters, instrction-tuned, quantization tuned
+            model="gemma3:4b-it-qat",  # 1 billion parameters, instrction-tuned, quantization tuned
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_question}
