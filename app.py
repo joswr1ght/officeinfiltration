@@ -181,6 +181,16 @@ def set_current_level(level):
 @app.route('/')
 def level1():
     set_current_level(1)
+    # Check if instructions for level 1 have been shown
+    show_instructions = not session.get('level1_instructions_shown', False)
+    if show_instructions:
+        session['level1_instructions_shown'] = True  # Mark as shown
+
+    # Get success_info from session if it exists, then clear it
+    success_info = session.pop('success_info', None)  # Clear success_info for level 1 as well
+    return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1],
+                           success_info=success_info, hints=LEVEL_HINTS.get(1, []),
+                           show_level1_instructions_modal=show_instructions)
     # Get success_info from session if it exists, then clear it
     success_info = ""
     return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1],

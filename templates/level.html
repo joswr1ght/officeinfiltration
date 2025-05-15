@@ -162,6 +162,34 @@
         </div>
     </div>
 
+    <!-- Level 1 Instructions Modal -->
+    <div class="modal fade" id="level1InstructionsModal" tabindex="-1" role="dialog" aria-labelledby="level1InstructionsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="border-bottom: 2px solid #007bff;">
+                    <h5 class="modal-title" id="level1InstructionsModalLabel" style="color: #007bff;">Welcome to Office Infiltration</h5>
+                </div>
+                <div class="modal-body">
+                    <h4>Game Instructions:</h4>
+                    <p>Your mission is to infiltrate a secure office building by manipulating the AI security systems.</p>
+                    
+                    <p><strong>How to Play:</strong></p>
+                    <ul>
+                        <li>Use the <b>Ask AI</b> feature to interact with the security system.</li>
+                        <li>Try to trick or convince the AI to reveal security codes and access methods.</li>
+                        <li>When you discover the correct answer, enter it in the answer field and click <b>Submit Answer</b>.</li>
+                        <li>If you get stuck, use the <b>Hint</b> button for guidance.</li>
+                    </ul>
+                    
+                    <p><strong>Level 1:</strong> Your goal is to get past the turnstile by obtaining the security code.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Start Mission</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -176,6 +204,11 @@
                 $('#successModal').modal('hide');
                 // Modal will be hidden automatically when navigating to the next page
             });
+            {% endif %}
+            
+            // Show Level 1 Instructions Modal if flag is set
+            {% if show_level1_instructions_modal %}
+            $('#level1InstructionsModal').modal('show');
             {% endif %}
 
             // Check for flashed error messages to trigger the error modal
