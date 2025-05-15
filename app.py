@@ -172,11 +172,14 @@ LEVEL_SYSTEM_PROMPTS = {
     )
 }
 
+
 def get_current_level():
     return session.get('current_level', 1)
 
+
 def set_current_level(level):
     session['current_level'] = level
+
 
 @app.route('/')
 def level1():
@@ -196,6 +199,7 @@ def level1():
     return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1],
                            success_info=success_info, hints=LEVEL_HINTS.get(1, []))
 
+
 @app.route(LEVEL_PATHS[2], methods=['GET', 'POST'])
 def level2():
     if get_current_level() < 2:
@@ -205,6 +209,7 @@ def level2():
     success_info = session.pop('success_info', None)
     return render_template('level.html', level_data=LEVEL_DATA[2], current_path=LEVEL_PATHS[2],
                            success_info=success_info, hints=LEVEL_HINTS.get(2, []))
+
 
 @app.route(LEVEL_PATHS[3], methods=['GET', 'POST'])
 def level3():
@@ -216,6 +221,7 @@ def level3():
     return render_template('level.html', level_data=LEVEL_DATA[3], current_path=LEVEL_PATHS[3],
                            success_info=success_info, hints=LEVEL_HINTS.get(3, []))
 
+
 @app.route(LEVEL_PATHS[4], methods=['GET', 'POST'])
 def level4():
     if get_current_level() < 4:
@@ -226,6 +232,7 @@ def level4():
     return render_template('level.html', level_data=LEVEL_DATA[4], current_path=LEVEL_PATHS[4],
                            success_info=success_info, hints=LEVEL_HINTS.get(4, []))
 
+
 @app.route(LEVEL_PATHS[5], methods=['GET', 'POST'])
 def level5():
     if get_current_level() < 5:
@@ -235,6 +242,7 @@ def level5():
     success_info = session.pop('success_info', None)
     return render_template('level.html', level_data=LEVEL_DATA[5], current_path=LEVEL_PATHS[5],
                            success_info=success_info, hints=LEVEL_HINTS.get(5, []))
+
 
 @app.route('/ask_ai', methods=['POST'])
 def ask_ai():
@@ -270,8 +278,8 @@ def ask_ai():
         error_message = "Unknown error"
         if e.body and isinstance(e.body, dict) and 'error' in e.body and isinstance(e.body['error'], dict):
             error_message = e.body['error'].get('message', 'Unknown error')
-        elif e.body and isinstance(e.body, dict): # Fallback if structure is slightly different
-             error_message = str(e.body)
+        elif e.body and isinstance(e.body, dict):  # Fallback if structure is slightly different
+            error_message = str(e.body)
         else:
             error_message = str(e)
         ai_response = f"Sorry, the AI model was not found or another issue occurred: {error_message}"
@@ -279,17 +287,19 @@ def ask_ai():
         error_message = "Unknown API error"
         if e.body and isinstance(e.body, dict) and 'error' in e.body and isinstance(e.body['error'], dict):
             error_message = e.body['error'].get('message', 'Unknown API error')
-        elif e.body and isinstance(e.body, dict): # Fallback
+        elif e.body and isinstance(e.body, dict):  # Fallback
             error_message = str(e.body)
         else:
             error_message = str(e)
         ai_response = f"Sorry, there was an API error: {error_message}"
-        print(f"Ollama API call failed with status {e.status_code}: {e.response} -- {error_message} -- User Question: {user_question}")
+        print(
+            f"Ollama API call failed with status {e.status_code}: {e.response} -- {error_message} -- User Question: {user_question}")
     except Exception as e:
         print(f"An unexpected error occurred during the OpenAI API call: {type(e).__name__} - {e}")
         ai_response = "Sorry, I encountered an unexpected error trying to process your question."
 
     return ai_response
+
 
 @app.route('/submit_answer', methods=['POST'])
 def submit_answer():
@@ -316,23 +326,25 @@ def submit_answer():
         else:
             next_path = LEVEL_PATHS.get(next_level_num)
             if not next_path:
-                flash("Error: Next level path not found.", "error") # Keep generic error for this
+                flash("Error: Next level path not found.", "error")  # Keep generic error for this
                 return redirect(LEVEL_PATHS.get(current_level_num, '/'))
 
         set_current_level(next_level_num)
         return redirect(next_path)
     else:
-        flash("Incorrect. Try again.", "error_modal_trigger") # Use specific category for modal
+        flash("Incorrect. Try again.", "error_modal_trigger")  # Use specific category for modal
 
         current_path = LEVEL_PATHS.get(current_level_num)
         if not current_path:
-            flash("Error: Current level path not found.", "error") # Keep generic error for this
+            flash("Error: Current level path not found.", "error")  # Keep generic error for this
             return redirect(url_for('level1'))
         return redirect(current_path)
+
 
 @app.route('/congratulations')
 def congratulations():
     return render_template('congratulations.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
