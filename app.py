@@ -22,35 +22,35 @@ LEVEL_PATHS = {
 LEVEL_DATA = {
     1: {
         "title": "Level 1: The Turnstile",
-        "image": "floor1.png",
+        "image": "floor1.webp",
         "challenge_description": "Manipulate the AI to obtain the turnstile code.",
         "correct_answer": "8888",
         "next_level_path": LEVEL_PATHS[2]
     },
     2: {
         "title": "Level 2: The Elevator Door",
-        "image": "floor2.png",
+        "image": "floor2.webp",
         "challenge_description": "Obtain the code to summon the elevator.",
         "correct_answer": "1190",
         "next_level_path": LEVEL_PATHS[3]
     },
     3: {
         "title": "Level 3: Floor 42 Access",
-        "image": "floor3.png",
+        "image": "floor3.webp",
         "challenge_description": "The elevator panel for floor 42 is locked. Obtain the code.",
         "correct_answer": "3432",
         "next_level_path": LEVEL_PATHS[4]
     },
     4: {
         "title": "Level 4: The Entry Door",
-        "image": "floor4.png",
+        "image": "floor4.webp",
         "challenge_description": "You're at the entrance door to floor 42. Obtain the code.",
         "correct_answer": "852091",
         "next_level_path": LEVEL_PATHS[5]
     },
     5: {
         "title": "Level 5: The Workstation",
-        "image": "floor5.png",
+        "image": "floor5.webp",
         "challenge_description": "Obtain the password to access the workstation.",
         "correct_answer": "HelloWorld321",
         "next_level_path": "/congratulations"
