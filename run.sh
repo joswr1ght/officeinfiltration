@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Run locally (for dev purposes)
+
 # Create and activate virtual environment
 if [ ! -d "env" ]; then
     echo "Creating virtual environment..."
