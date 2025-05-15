@@ -90,12 +90,9 @@ LEVEL_SUCCESS_INFO = {
         "perferendis doloribus asperiores repellat. Sed ut perspiciatis unde omnis iste natus error "
         "sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab "
         "illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
-    ),
+    )
 
     # Level 5 success information is displayed in the congratulations page
-    5: (
-        ""
-    )
 }
 
 # Hints for each level
@@ -188,16 +185,23 @@ def level1():
     show_instructions = not session.get('level1_instructions_shown', False)
     if show_instructions:
         session['level1_instructions_shown'] = True  # Mark as shown
-
-    # Get success_info from session if it exists, then clear it
-    success_info = session.pop('success_info', None)  # Clear success_info for level 1 as well
+    
+    # Check if this is a restart from the congratulations page
+    restart = request.args.get('restart', None)
+    referrer = request.referrer
+    
+    # Clear success_info if restarting or coming from congratulations
+    if restart or (referrer and 'congratulations' in referrer):
+        session.pop('success_info', None)  # Clear any success_info to prevent showing completion modal
+        return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1],
+                               success_info=None, hints=LEVEL_HINTS.get(1, []),
+                               show_level1_instructions_modal=show_instructions)
+    
+    # Normal flow - show success info if it exists
+    success_info = session.pop('success_info', None)
     return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1],
                            success_info=success_info, hints=LEVEL_HINTS.get(1, []),
                            show_level1_instructions_modal=show_instructions)
-    # Get success_info from session if it exists, then clear it
-    success_info = ""
-    return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1],
-                           success_info=success_info, hints=LEVEL_HINTS.get(1, []))
 
 
 @app.route(LEVEL_PATHS[2], methods=['GET', 'POST'])
@@ -343,6 +347,8 @@ def submit_answer():
 
 @app.route('/congratulations')
 def congratulations():
+    # Clear any success_info when showing congratulations page
+    session.pop('success_info', None)
     return render_template('congratulations.html')
 
 
