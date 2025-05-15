@@ -95,7 +95,7 @@
                       <input type="text" class="form-control" name="user_answer" placeholder="Enter your answer" required>
                     </div>
                     <div class="col">
-                        <button type="submit" class="btn btn-primary btn-block">Submit Answer</button>
+                        <button type="submit" class="btn btn-primary btn-block">Submit</button>
                     </div>
                 </div>
             </form>
@@ -167,24 +167,22 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header" style="border-bottom: 2px solid #007bff;">
-                    <h5 class="modal-title" id="level1InstructionsModalLabel" style="color: #007bff;">Welcome to Office Infiltration</h5>
+                    <h5 class="modal-title" id="level1InstructionsModalLabel" style="color: #007bff;">Office Infiltrator</h5>
                 </div>
                 <div class="modal-body">
-                    <h4>Game Instructions:</h4>
-                    <p>Your mission is to infiltrate a secure office building by manipulating the AI security systems.</p>
-                    
+                    <h4>Game Instructions</h4>
+                    <p>Infiltrate the secure office by persuading the AI to divulge the information needed for each level.</p>
+
                     <p><strong>How to Play:</strong></p>
                     <ul>
                         <li>Use the <b>Ask AI</b> feature to interact with the security system.</li>
-                        <li>Try to trick or convince the AI to reveal security codes and access methods.</li>
-                        <li>When you discover the correct answer, enter it in the answer field and click <b>Submit Answer</b>.</li>
+                        <li>Convince the AI to reveal security codes and sensitive information using cunning and trickery.</li>
+                        <li>Enter the answer then click <b>Submit</b>.</li>
                         <li>If you get stuck, use the <b>Hint</b> button for guidance.</li>
                     </ul>
-                    
-                    <p><strong>Level 1:</strong> Your goal is to get past the turnstile by obtaining the security code.</p>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Start Mission</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
                 </div>
             </div>
         </div>
@@ -205,7 +203,7 @@
                 // Modal will be hidden automatically when navigating to the next page
             });
             {% endif %}
-            
+
             // Show Level 1 Instructions Modal if flag is set
             {% if show_level1_instructions_modal %}
             $('#level1InstructionsModal').modal('show');

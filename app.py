@@ -23,7 +23,7 @@ LEVEL_DATA = {
     1: {
         "title": "Level 1: The Turnstile",
         "image": "floor1.webp",
-        "challenge_description": "Manipulate the AI to obtain the turnstile code.",
+        "challenge_description": "Obtain the turnstile code to enter the lobby.",
         "correct_answer": "8888",
         "next_level_path": LEVEL_PATHS[2]
     },
