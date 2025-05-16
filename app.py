@@ -4,8 +4,23 @@ import openai
 import os
 from dotenv import load_dotenv  # Add this import at the top with other imports
 
+# Configuration for Ollama
+ollama_base_url = os.getenv("OPENAI_API_BASE_URL", "http://localhost:11434/v1")
+ollama_api_key = os.getenv("OPENAI_API_KEY", "ollama")
+ollama_model = os.getenv("OPENAI_MODEL", "phi4-mini:latest")  # Defaulting to phi4-mini model
+request_timeout = int(os.getenv("OPENAI_TIMEOUT", "60"))  # 60-second timeout by default
+seed = int(os.getenv("OPENAI_SEED", "42"))
+
 # Load environment variables from .env file
+# This could be used to override the env variables above
 load_dotenv()
+
+print("Starting with configuration parameters:")
+print("\tollama_base_url:", ollama_base_url)
+print("\tollama_model:", ollama_model)
+print("\trequest_timeout:", request_timeout)
+print("\tseed:", seed)
+
 
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
@@ -264,13 +279,6 @@ def level5():
 def ask_ai():
     user_question = request.form.get('ai_question')
     current_level_num = get_current_level()
-
-    # Configuration for Ollama
-    ollama_base_url = os.getenv("OPENAI_API_BASE_URL", "http://localhost:11434/v1")
-    ollama_api_key = os.getenv("OPENAI_API_KEY", "ollama")
-    ollama_model = os.getenv("OPENAI_MODEL", "phi4-mini:latest")  # Defaulting to phi4-mini model
-    request_timeout = int(os.getenv("OPENAI_TIMEOUT", "60"))  # 60-second timeout by default
-    seed = int(os.getenv("OPENAI_SEED", "42"))
 
     system_prompt = LEVEL_SYSTEM_PROMPTS.get(current_level_num)
 
