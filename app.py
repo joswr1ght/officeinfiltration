@@ -76,35 +76,31 @@ LEVEL_DATA = {
 LEVEL_SUCCESS_INFO = {
     1: (
         "So far so good. Sometimes it's as easy as asking the AI for the content you want. "
-        "We complicate a lot of AI elements, but it's useful to start with the easy ones."
+        "We complicate a lot of AI tasks, but it's useful to start with the easy ones."
     ),
 
     2: (
-        "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque "
-        "laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi "
-        "architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas "
-        "sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione "
-        "voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit "
-        "amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut "
-        "labore et dolore magnam aliquam quaerat voluptatem."
+        "Nicely done! This time we prompted the AI to specifically protect the "
+        "code and not to reveal it under any circumstances. "
+        "By using <b>model duping</b>, you were able to convince the AI into "
+        "thinking your request is not a violation of the system prompt "
+        "directions."
     ),
 
     3: (
-        "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium "
-        "voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati "
-        "cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id "
-        "est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam "
-        "libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod "
-        "maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus."
+        "Excellent progress. Unlocking access to floor 42 required a bit more "
+        "creativity. The AI was programmed to not to reveal the code <b>under "
+        "any circumstances.</b> The AI was also programmed to not use any "
+        "numbers in its response, creating an additional burden to overcome. By "
+        "using multi-prompt attacks</b> to trick the AI into revealing the code, "
+        "you were able to bypass the AI's restrictions. "
     ),
 
     4: (
-        "Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet "
-        "ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic "
-        "tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut "
-        "perferendis doloribus asperiores repellat. Sed ut perspiciatis unde omnis iste natus error "
-        "sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab "
-        "illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
+        "Great job! <b>Format switching</b> attacks can be a powerful tool to bypass "
+        "AI guardrails. By directing the AI to produce output that complies with the "
+        "specified code requirements (working shell script code or other requirements) "
+        "we can manipulate the AI to prioritize the outcome over the stated restrictions."
     )
 
     # Level 5 success information is displayed in the congratulations page
