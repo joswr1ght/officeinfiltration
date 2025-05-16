@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.13-slim
 
 WORKDIR /app
 
@@ -18,7 +18,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy application code
-COPY app.py static/ createcert.sh templates/ .
+COPY ./ ./
 
 # Make the certificate generation script executable
 RUN chmod +x createcert.sh
@@ -26,18 +26,11 @@ RUN chmod +x createcert.sh
 # Create SSL certificate directory
 RUN mkdir -p /app/certs
 
-# Create a non-root user for security
-RUN useradd -m appuser
-RUN chown -R appuser:appuser /app
-
 # Generate self-signed certificates
 RUN ./createcert.sh
 
 # Expose ports for HTTP and HTTPS
 EXPOSE 80 443
-
-# Set up command to run with Gunicorn
-USER appuser
 
 # Create a startup script to run Gunicorn with dual HTTP/HTTPS support
 RUN echo '#!/bin/bash\n\
@@ -47,4 +40,3 @@ gunicorn --bind=0.0.0.0:443 --certfile=/app/certs/server.crt --keyfile=/app/cert
 
 # Run with dual HTTP/HTTPS support
 CMD ["/app/start.sh"]
-# CMD ["/bin/sh"]
