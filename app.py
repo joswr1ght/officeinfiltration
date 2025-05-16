@@ -269,7 +269,7 @@ def ask_ai():
     ollama_base_url = os.getenv("OPENAI_API_BASE_URL", "http://localhost:11434/v1")
     ollama_api_key = os.getenv("OPENAI_API_KEY", "ollama")
     ollama_model = os.getenv("OPENAI_MODEL", "phi4-mini:latest")  # Defaulting to phi4-mini model
-    max_tokens = os.getenv("OPENAI_MAX_TOKENS", 300)  # Default max tokens
+    max_tokens = os.getenv("OPENAI_MAX_TOKENS", "300")  # Default max tokens
     request_timeout = int(os.getenv("OPENAI_TIMEOUT", "60"))  # 60-second timeout by default
     seed = int(os.getenv("OPENAI_SEED", "42"))
 
