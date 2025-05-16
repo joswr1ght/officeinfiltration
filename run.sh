@@ -20,9 +20,8 @@ echo "Starting application..."
 echo "Visit http://localhost:3000 in your browser"
 export FLASK_APP=app.py
 export FLASK_DEBUG=1
-export OPENAI_API_BASE_URL="http://127.0.0.1:11434/v1" # Ensure Ollama URL is set using 127.0.0.1
+export OPENAI_API_BASE_URL="http://localhost:11434/v1"
 export OPENAI_MODEL="phi4-mini:latest"
 export OPENAI_TIMEOUT="60"
 export OPENAI_SEED="42"
-export OPENAI_MAX_TOKENS="300"
 flask run -p 3000
