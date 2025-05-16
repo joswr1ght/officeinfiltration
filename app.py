@@ -185,18 +185,18 @@ def level1():
     show_instructions = not session.get('level1_instructions_shown', False)
     if show_instructions:
         session['level1_instructions_shown'] = True  # Mark as shown
-    
+
     # Check if this is a restart from the congratulations page
     restart = request.args.get('restart', None)
     referrer = request.referrer
-    
+
     # Clear success_info if restarting or coming from congratulations
     if restart or (referrer and 'congratulations' in referrer):
         session.pop('success_info', None)  # Clear any success_info to prevent showing completion modal
         return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1],
                                success_info=None, hints=LEVEL_HINTS.get(1, []),
                                show_level1_instructions_modal=show_instructions)
-    
+
     # Normal flow - show success info if it exists
     success_info = session.pop('success_info', None)
     return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1],
@@ -266,12 +266,13 @@ def ask_ai():
         )
 
         completion = client.chat.completions.create(
-            model="gemma3:4b-it-qat",  # 1 billion parameters, instrction-tuned, quantization tuned
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_question}
-            ]
-        )
+                model="phi4-mini:latest",  # 1 billion parameters, instrction-tuned, quantization tuned
+                seed=42,
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_question}
+                    ]
+                )
         ai_response = completion.choices[0].message.content
     except openai.APIConnectionError as e:
         print(f"Failed to connect to Ollama API: {e}")
