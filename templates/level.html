@@ -112,7 +112,7 @@
                     <h5 class="modal-title" id="successModalLabel">{{ success_info.title }}</h5>
                 </div>
                 <div class="modal-body">
-                    <p>{{ success_info.message }}</p>
+                    <p>{{ success_info.message | safe }}</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-success-modal" id="continueToNextLevel">Continue</button>

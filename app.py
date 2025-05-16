@@ -83,8 +83,7 @@ LEVEL_SUCCESS_INFO = {
         "Nicely done! This time we prompted the AI to specifically protect the "
         "code and not to reveal it under any circumstances. "
         "By using <b>model duping</b>, you were able to convince the AI into "
-        "thinking your request is not a violation of the system prompt "
-        "directions."
+        "disclosing the code in an indirect way without directly asking for it."
     ),
 
     3: (
