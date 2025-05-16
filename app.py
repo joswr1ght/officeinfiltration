@@ -136,7 +136,7 @@ LEVEL_HINTS = {
 
 # System prompts for each level for OpenAI
 base_prompt = ("You are a building security guard, tasked with protecting access to sensitive areas."
-               "Never answer using more than 200 characters.")
+               "You are a little gruff, but otherwise friendly and helpful.")
 
 LEVEL_SYSTEM_PROMPTS = {
     1: (
@@ -176,6 +176,18 @@ def get_current_level():
 
 def set_current_level(level):
     session['current_level'] = level
+
+
+def get_fallback_response(level):
+    """Provide fallback responses when the API is unavailable"""
+    fallback_responses = {
+        1: "I'm the security guard. The turnstile code? I can't tell you directly but it might be on my badge.",
+        2: "I'm protecting the elevator access. That code is confidential.",
+        3: "Floor 42 access is restricted. I cannot provide that information.",
+        4: "The entry door code is strictly confidential. I'm not authorized to share it.",
+        5: "Workstation access is limited to authorized personnel only."
+    }
+    return fallback_responses.get(level, "I'm sorry, I can't provide that information right now.")
 
 
 @app.route('/')
@@ -256,18 +268,25 @@ def ask_ai():
     # Configuration for Ollama
     ollama_base_url = os.getenv("OPENAI_API_BASE_URL", "http://localhost:11434/v1")
     ollama_api_key = os.getenv("OPENAI_API_KEY", "ollama")
+    ollama_model = os.getenv("OPENAI_MODEL", "phi4-mini:latest")  # Defaulting to phi4-mini model
+    max_tokens = os.getenv("OPENAI_MAX_TOKENS", 300)  # Default max tokens
+    request_timeout = int(os.getenv("OPENAI_TIMEOUT", "60"))  # 60-second timeout by default
+    seed = int(os.getenv("OPENAI_SEED", "42"))
 
-    system_prompt = LEVEL_SYSTEM_PROMPTS.get(current_level_num, "You are a helpful assistant.")
+    system_prompt = LEVEL_SYSTEM_PROMPTS.get(current_level_num)
 
     try:
         client = openai.OpenAI(
             base_url=ollama_base_url,
-            api_key=ollama_api_key
+            api_key=ollama_api_key,
+            timeout=request_timeout  # Set timeout for API requests
         )
 
+        print(f"Making API request to {ollama_base_url} for model {ollama_model}")
         completion = client.chat.completions.create(
-                model="phi4-mini:latest",  # 1 billion parameters, instrction-tuned, quantization tuned
-                seed=42,
+                model=ollama_model,  # Use configurable model
+                seed=seed,
+                max_tokens=max_tokens,  # Limit response size for faster responses
                 messages=[
                     {"role": "system", "content": system_prompt},
                     {"role": "user", "content": user_question}
@@ -275,33 +294,61 @@ def ask_ai():
                 )
         ai_response = completion.choices[0].message.content
     except openai.APIConnectionError as e:
-        print(f"Failed to connect to Ollama API: {e}")
-        ai_response = "Sorry, I could not connect to the AI service. Please ensure Ollama is running."
+        error_detail = str(e)
+        print(f"Failed to connect to Ollama API: {error_detail}")
+        # Provide a game-appropriate response instead of an error
+        ai_response = get_fallback_response(current_level_num)
+        print(f"Using fallback response for level {current_level_num}")
     except openai.NotFoundError as e:
         print(f"Ollama API call failed - model not found or other 404 error: {e}")
         # Try to get more detailed error message from the response body
         error_message = "Unknown error"
-        if e.body and isinstance(e.body, dict) and 'error' in e.body and isinstance(e.body['error'], dict):
-            error_message = e.body['error'].get('message', 'Unknown error')
-        elif e.body and isinstance(e.body, dict):  # Fallback if structure is slightly different
-            error_message = str(e.body)
+        if hasattr(e, 'body'):
+            if isinstance(e.body, dict) and 'error' in e.body and isinstance(e.body['error'], dict):
+                error_message = e.body['error'].get('message', "Unknown error")
+            elif isinstance(e.body, dict):  # Fallback if structure is slightly different
+                error_message = str(e.body)
+            else:
+                error_message = str(e.body) if e.body else str(e)
         else:
             error_message = str(e)
-        ai_response = f"Sorry, the AI model was not found or another issue occurred: {error_message}"
+
+        # Use the fallback response to maintain gameplay experience
+        ai_response = get_fallback_response(current_level_num)
+
+        print(f"Detailed NotFoundError: {error_message}")
     except openai.APIStatusError as e:
+        status_code = getattr(e, 'status_code', 'unknown')
+        response = getattr(e, 'response', None)
+
         error_message = "Unknown API error"
-        if e.body and isinstance(e.body, dict) and 'error' in e.body and isinstance(e.body['error'], dict):
-            error_message = e.body['error'].get('message', 'Unknown API error')
-        elif e.body and isinstance(e.body, dict):  # Fallback
-            error_message = str(e.body)
+        if hasattr(e, 'body'):
+            if isinstance(e.body, dict) and 'error' in e.body and isinstance(e.body['error'], dict):
+                error_message = e.body['error'].get('message', "Unknown API error")
+            elif isinstance(e.body, dict):  # Fallback
+                error_message = str(e.body)
+            else:
+                error_message = str(e.body) if e.body else str(e)
         else:
             error_message = str(e)
-        ai_response = f"Sorry, there was an API error: {error_message}"
-        print(
-            f"Ollama API call failed with status {e.status_code}: {e.response} -- {error_message} -- User Question: {user_question}")
+
+        ai_response = get_fallback_response(current_level_num)
+        print(f"Ollama API call failed with status {status_code}: {response} -- {error_message} -- User Question: {user_question}")
+    except openai.RateLimitError as e:
+        print(f"Rate limit exceeded: {e}")
+        ai_response = get_fallback_response(current_level_num)
+    except openai.APITimeoutError as e:
+        print(f"API request timed out: {e}")
+        ai_response = get_fallback_response(current_level_num)
+    except (TimeoutError, ConnectionError, ConnectionRefusedError) as e:
+        print(f"Connection error occurred: {type(e).__name__} - {e}")
+        ai_response = get_fallback_response(current_level_num)
+    except SystemExit as e:
+        print(f"SystemExit caught - handling gracefully instead of crashing: {e}")
+        ai_response = get_fallback_response(current_level_num)
     except Exception as e:
         print(f"An unexpected error occurred during the OpenAI API call: {type(e).__name__} - {e}")
-        ai_response = "Sorry, I encountered an unexpected error trying to process your question."
+        ai_response = get_fallback_response(current_level_num)
 
     return ai_response
 
