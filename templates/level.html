@@ -305,7 +305,8 @@
                         $('#ai_response').val(response);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        $('#ai_response').val('Error: Could not reach the API endpoint.');
+                        // Restore more detailed error message
+                        $('#ai_response').val('Error: Could not reach the AI. Status: ' + textStatus + '. Error: ' + errorThrown);
                         console.error("AJAX Error: ", textStatus, errorThrown, jqXHR.responseText);
                     }
                 });

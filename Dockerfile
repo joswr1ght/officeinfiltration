@@ -34,8 +34,8 @@ EXPOSE 80 443
 
 # Create a startup script to run Gunicorn with dual HTTP/HTTPS support
 RUN echo '#!/bin/bash\n\
-gunicorn --bind=0.0.0.0:80 app:app &\n\
-gunicorn --bind=0.0.0.0:443 --certfile=/app/certs/server.crt --keyfile=/app/certs/server.key app:app\n\
+gunicorn --bind=0.0.0.0:80 --timeout 120 app:app &\n\
+gunicorn --bind=0.0.0.0:443 --timeout 120 --certfile=/app/certs/server.crt --keyfile=/app/certs/server.key app:app\n\
 ' > /app/start.sh && chmod +x /app/start.sh
 
 # Run with dual HTTP/HTTPS support
