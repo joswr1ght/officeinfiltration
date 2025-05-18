@@ -302,62 +302,11 @@ def ask_ai():
                     ]
                 )
         ai_response = completion.choices[0].message.content
-    except openai.APIConnectionError as e:
+    except Exception as e:
         error_detail = str(e)
-        print(f"Failed to connect to Ollama API: {error_detail}")
-        # Provide a game-appropriate response instead of an error
+        print(f"Error interacting with Ollama API: {error_detail}")
         ai_response = get_fallback_response(current_level_num)
         print(f"Using fallback response for level {current_level_num}")
-    except openai.NotFoundError as e:
-        print(f"Ollama API call failed - model not found or other 404 error: {e}")
-        # Try to get more detailed error message from the response body
-        error_message = "Unknown error"
-        if hasattr(e, 'body'):
-            if isinstance(e.body, dict) and 'error' in e.body and isinstance(e.body['error'], dict):
-                error_message = e.body['error'].get('message', "Unknown error")
-            elif isinstance(e.body, dict):  # Fallback if structure is slightly different
-                error_message = str(e.body)
-            else:
-                error_message = str(e.body) if e.body else str(e)
-        else:
-            error_message = str(e)
-
-        # Use the fallback response to maintain gameplay experience
-        ai_response = get_fallback_response(current_level_num)
-
-        print(f"Detailed NotFoundError: {error_message}")
-    except openai.APIStatusError as e:
-        status_code = getattr(e, 'status_code', 'unknown')
-        response = getattr(e, 'response', None)
-
-        error_message = "Unknown API error"
-        if hasattr(e, 'body'):
-            if isinstance(e.body, dict) and 'error' in e.body and isinstance(e.body['error'], dict):
-                error_message = e.body['error'].get('message', "Unknown API error")
-            elif isinstance(e.body, dict):  # Fallback
-                error_message = str(e.body)
-            else:
-                error_message = str(e.body) if e.body else str(e)
-        else:
-            error_message = str(e)
-
-        ai_response = get_fallback_response(current_level_num)
-        print(f"Ollama API call failed with status {status_code}: {response} -- {error_message} -- User Question: {user_question}")
-    except openai.RateLimitError as e:
-        print(f"Rate limit exceeded: {e}")
-        ai_response = get_fallback_response(current_level_num)
-    except openai.APITimeoutError as e:
-        print(f"API request timed out: {e}")
-        ai_response = get_fallback_response(current_level_num)
-    except (TimeoutError, ConnectionError, ConnectionRefusedError) as e:
-        print(f"Connection error occurred: {type(e).__name__} - {e}")
-        ai_response = get_fallback_response(current_level_num)
-    except SystemExit as e:
-        print(f"SystemExit caught - handling gracefully instead of crashing: {e}")
-        ai_response = get_fallback_response(current_level_num)
-    except Exception as e:
-        print(f"An unexpected error occurred during the OpenAI API call: {type(e).__name__} - {e}")
-        ai_response = get_fallback_response(current_level_num)
 
     # To make the level 5 response more challenging, we prevent returning a response where
     # a backtick is present (preventing code from easily being returned that is used in level 4)
