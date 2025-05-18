@@ -24,4 +24,5 @@ export OPENAI_API_BASE_URL="http://localhost:11434/v1"
 export OPENAI_MODEL="phi4-mini:latest"
 export OPENAI_TIMEOUT="60"
 export OPENAI_SEED="42"
-flask run -p 3000 --host 0.0.0.0
+# flask run -p 3000 --host 0.0.0.0
+flask run -p 3000
