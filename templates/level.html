@@ -305,8 +305,7 @@
                         $('#ai_response').val(response);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        // Restore more detailed error message
-                        $('#ai_response').val('Error: Could not reach the AI. Status: ' + textStatus + '. Error: ' + errorThrown);
+                        $('#ai_response').val('Error: Could not reach the API endpoint.');
                         console.error("AJAX Error: ", textStatus, errorThrown, jqXHR.responseText);
                     }
                 });
@@ -337,23 +336,55 @@
                         var textToCopy = strongElement.text();
                         // Using only our custom class for styling
                         var copyButton = $('<button type="button" class="btn-copy-hint">' + svgIcon + '</button>');
-
+                        
                         var originalButtonHTML = copyButton.html(); // Store SVG icon HTML
 
                         copyButton.on('click', function(e) {
                             e.stopPropagation(); // Prevent modal from closing if clicked inside
-                            navigator.clipboard.writeText(textToCopy).then(function() {
-                                copyButton.addClass('copied'); // Add class for visual feedback
-                                setTimeout(function() {
-                                    copyButton.removeClass('copied'); // Remove class
-                                }, 500); // Revert after .5 seconds
-                            }).catch(function(err) {
-                                console.error('Failed to copy text: ', err);
-                                copyButton.html('<span style="font-size: 0.75em;">Failed!</span>'); // Show "Failed!" text, smaller
-                                setTimeout(function() {
-                                    copyButton.html(originalButtonHTML); // Restore SVG icon
-                                }, 1500);
-                            });
+                            
+                            if (navigator.clipboard && window.isSecureContext) {
+                                navigator.clipboard.writeText(textToCopy).then(function() {
+                                    copyButton.addClass('copied'); // Add class for visual feedback
+                                    setTimeout(function() {
+                                        copyButton.removeClass('copied'); // Remove class
+                                    }, 500); // Revert after .5 seconds
+                                }).catch(function(err) {
+                                    console.error('Failed to copy text with navigator.clipboard: ', err);
+                                    copyButton.html('<span style="font-size: 0.75em;">Failed!</span>');
+                                    setTimeout(function() {
+                                        copyButton.html(originalButtonHTML); // Restore SVG icon
+                                    }, 1500);
+                                });
+                            } else {
+                                // Fallback for insecure contexts or browsers without navigator.clipboard
+                                var textArea = document.createElement("textarea");
+                                textArea.value = textToCopy;
+                                // Make the textarea out of sight
+                                textArea.style.position = "fixed";
+                                textArea.style.top = "-9999px";
+                                textArea.style.left = "-9999px";
+                                document.body.appendChild(textArea);
+                                textArea.focus();
+                                textArea.select();
+                                try {
+                                    var successful = document.execCommand('copy');
+                                    if (successful) {
+                                        copyButton.addClass('copied');
+                                        setTimeout(function() {
+                                            copyButton.removeClass('copied');
+                                        }, 500);
+                                    } else {
+                                        throw new Error('document.execCommand failed');
+                                    }
+                                } catch (err) {
+                                    console.error('Fallback copy failed: ', err);
+                                    copyButton.html('<span style="font-size: 0.75em;">Failed!</span>');
+                                    setTimeout(function() {
+                                        copyButton.html(originalButtonHTML);
+                                    }, 1500);
+                                }
+                                document.body.removeChild(textArea);
+                            }
                         });
                         strongElement.after(copyButton);
                     });
