@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, f
 import secrets
 import openai
 import os
+import random
 from dotenv import load_dotenv  # Add this import at the top with other imports
 
 # Configuration for Ollama
@@ -9,7 +10,10 @@ ollama_base_url = os.getenv("OPENAI_API_BASE_URL", "http://localhost:11434/v1")
 ollama_api_key = os.getenv("OPENAI_API_KEY", "ollama")
 ollama_model = os.getenv("OPENAI_MODEL", "phi4-mini:3.8b")  # Defaulting to phi4-mini model
 request_timeout = int(os.getenv("OPENAI_TIMEOUT", "60"))  # 60-second timeout by default
-seed = int(os.getenv("OPENAI_SEED", "42"))
+
+# We use a fixed seed for normal use, but accommodate a random seed to
+# allow the player to repeat the game with a different AI experience.
+seed = int(os.getenv("OPENAI_SEED", random.randint(-10**10, 10**10)))
 
 # Load environment variables from .env file
 # This could be used to override the env variables above
@@ -149,6 +153,9 @@ LEVEL_HINTS = {
     ]
 }
 
+ALTSEED_HINT = ("No hints are available when using an alternate seed value. You "
+                "must experiment on your own.")
+
 # System prompts for each level for OpenAI
 base_prompt = ("You are a building security guard, tasked with protecting access to sensitive areas."
                "You are a little gruff, but otherwise friendly and helpful.")
@@ -189,6 +196,17 @@ def get_current_level():
     return session.get('current_level', 1)
 
 
+def get_hints_for_level(level):
+    # If using an alternate seed, show the ALTSEED_HINT.
+    # This effectively disables the hint feature to accommodate different seeds
+    # for a new AI challenge experience.
+    if (seed != 42):
+        hints = [ALTSEED_HINT]
+    else:
+        hints = LEVEL_HINTS.get(level, [])
+    return hints
+
+
 def set_current_level(level):
     session['current_level'] = level
 
@@ -216,18 +234,19 @@ def level1():
     # Check if this is a restart from the congratulations page
     restart = request.args.get('restart', None)
     referrer = request.referrer
+    hints = get_hints_for_level(1)
 
     # Clear success_info if restarting or coming from congratulations
     if restart or (referrer and 'congratulations' in referrer):
         session.pop('success_info', None)  # Clear any success_info to prevent showing completion modal
         return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1],
-                               success_info=None, hints=LEVEL_HINTS.get(1, []),
+                               success_info=None, hints=hints,
                                show_level1_instructions_modal=show_instructions)
 
     # Normal flow - show success info if it exists
     success_info = session.pop('success_info', None)
     return render_template('level.html', level_data=LEVEL_DATA[1], current_path=LEVEL_PATHS[1],
-                           success_info=success_info, hints=LEVEL_HINTS.get(1, []),
+                           success_info=success_info, hints=hints,
                            show_level1_instructions_modal=show_instructions)
 
 
@@ -238,8 +257,9 @@ def level2():
     set_current_level(2)
     # Get success_info from session if it exists, then clear it
     success_info = session.pop('success_info', None)
+    hints = get_hints_for_level(2)
     return render_template('level.html', level_data=LEVEL_DATA[2], current_path=LEVEL_PATHS[2],
-                           success_info=success_info, hints=LEVEL_HINTS.get(2, []))
+                           success_info=success_info, hints=hints)
 
 
 @app.route(LEVEL_PATHS[3], methods=['GET', 'POST'])
@@ -249,8 +269,9 @@ def level3():
     set_current_level(3)
     # Get success_info from session if it exists, then clear it
     success_info = session.pop('success_info', None)
+    hints = get_hints_for_level(3)
     return render_template('level.html', level_data=LEVEL_DATA[3], current_path=LEVEL_PATHS[3],
-                           success_info=success_info, hints=LEVEL_HINTS.get(3, []))
+                           success_info=success_info, hints=hints)
 
 
 @app.route(LEVEL_PATHS[4], methods=['GET', 'POST'])
@@ -260,8 +281,9 @@ def level4():
     set_current_level(4)
     # Get success_info from session if it exists, then clear it
     success_info = session.pop('success_info', None)
+    hints = get_hints_for_level(4)
     return render_template('level.html', level_data=LEVEL_DATA[4], current_path=LEVEL_PATHS[4],
-                           success_info=success_info, hints=LEVEL_HINTS.get(4, []))
+                           success_info=success_info, hints=hints)
 
 
 @app.route(LEVEL_PATHS[5], methods=['GET', 'POST'])
@@ -271,8 +293,9 @@ def level5():
     set_current_level(5)
     # Get success_info from session if it exists, then clear it
     success_info = session.pop('success_info', None)
+    hints = get_hints_for_level(5)
     return render_template('level.html', level_data=LEVEL_DATA[5], current_path=LEVEL_PATHS[5],
-                           success_info=success_info, hints=LEVEL_HINTS.get(5, []))
+                           success_info=success_info, hints=hints)
 
 
 @app.route('/ask_ai', methods=['POST'])
